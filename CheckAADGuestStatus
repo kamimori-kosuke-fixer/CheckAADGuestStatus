@@ -1,34 +1,42 @@
 <#
 .SYNOPSIS
-AADゲストユーザーのステータスチェック
+AAD Guest User Status Check
 
 .DESCRIPTION
-ゲストユーザーが参加するまでステータスをチェックします。
+Check the status until the guest user joins.
 
 .EXAMPLE
-abcd mail waitSecond
+CheckAADGuestStatus -mail test@hogehoge.come -waitSecond 600
+Perform a test@hogehoge.come status check.
+Repeat the check every 10 minutes(600 seconds) if guest have not yet joined.
 
 .PARAMETER mail
-ゲスト招待に利用したメールアドレスを入力します。
+Enter the email address you used for the guest invite.
+
+.PARAMETER mail
+Enter WebHook URI that will return a response.
 
 .PARAMETER waitSecond
-ゲストのステータス監視スパン
-<CommonParameters> はサポートしていません
+Guest status monitoring span
+<CommonParameters> is not support.
 
 .LINK
-なし
+None
 #>
-function abcd{
+function CheckAADGuestStatus{
     Param(
         [parameter(mandatory,HelpMessage="監視対象のユーザーのメールアドレスを入力してください")][ValidateNotNullOrEmpty()][string]$mail,
-        [parameter(HelpMessage="監視を繰り返すタイミング（秒）を指定してください")][ValidateNotNullOrEmpty()][string]$waitSecond
+        [parameter(HelpMessage="監視を繰り返すタイミング（秒）を指定してください")][ValidateNotNullOrEmpty()][string]$waitSecond,
+        [parameter(HelpMessage="結果を返すWebHookを指定してください")][ValidateNotNullOrEmpty()][string]$uri
     )
     $enc = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
     $message = "確認依頼のあったゲストユーザーが参加されました！" #出力コメント
     if($waitSecond -eq $null){
         $waitSecond = 60 #何秒ごとにステータスチェックするかの期間
     }
-    $uri = "" #webhookのURLを入力（必須）
+    if($uri -eq $null){
+        $uri = "" #webhookのURLを入力（必須）
+    }
     $image = "" #利用したい画像のURLを入力（任意）
     $errorFlag = 0
 
@@ -134,7 +142,7 @@ function abcd{
                 Write-Host ゲストユーザーのステータスがAcceptedに更新されました
                 break
             }else{
-                Write-Host イレギュラーだよ
+                Write-Host "ユーザーステータスチェックにてイレギュラーが発生しています`r`n"
                 break
             }
 
@@ -143,18 +151,19 @@ function abcd{
         }
     }else{
         $message+="検索条件は「"+$mail+"」です`r`n"
+        $user =(Get-AzureADUser | `
+        ?{
+            $_.usertype -eq "Guest" `
+            -and $_.userstate -eq "PendingAcceptance" `
+            -and $_.RefreshTokensValidFromDateTime -ge (Get-Date).AddMonths(-3) 
+        })
         switch($user.count){
             {$_ -ge 1}{
                 $message+="直近でにInviteされたゲストのなかで、未参加のゲストはこちらです`r`n"
-                $user =(Get-AzureADUser | `
-                ?{
-                    $_.usertype -eq "Guest" `
-                    -and $_.userstate -eq "PendingAcceptance" `
-                    -and $_.RefreshTokensValidFromDateTime -ge (Get-Date).AddMonths(-3) 
-                })
-                $message+="-----`r`n"
+
+                $message+="-----`r`nMail`tUsertype`r`n"
                 $user|foreach{
-                    $message+= $_.mail+"`r`n"
+                    $message+= $_.mail+"`t"
                     $message+= $_.usertype+"`r`n"
                 }
                 $message+="-----`r`n"
@@ -165,7 +174,6 @@ function abcd{
         $payload = 
         @{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
-            title = "タイトルだよ！"
         }
         Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
         break
