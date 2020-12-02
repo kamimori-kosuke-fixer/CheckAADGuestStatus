@@ -27,7 +27,7 @@ None
 #include config
 . ".\CheckAADGuestStatus_config.ps1"
 
-function CheckAADGuestStatus{
+function global:CheckAADGuestStatus{
     Param(
         [parameter(mandatory,HelpMessage="監視対象のユーザーのメールアドレスを入力してください")][ValidateNotNullOrEmpty()][string]$mail,
         [parameter(HelpMessage="監視を繰り返すタイミング（秒）を指定してください")][ValidateNotNullOrEmpty()][string]$waitSecond,
