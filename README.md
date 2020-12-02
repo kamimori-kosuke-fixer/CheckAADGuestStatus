@@ -1,2 +1,0 @@
-# Powershell
-PowerShell Public用
