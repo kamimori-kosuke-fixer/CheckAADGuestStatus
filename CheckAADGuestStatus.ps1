@@ -35,16 +35,30 @@ function CheckAADGuestStatus{
     )
     $enc = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
     $message = "確認依頼のあったゲストユーザーが参加されました！" #出力コメント
+    $errorFlag = 0
     
     #ループのタイミング（引数指定が無ければデフォルト値を設定）
-    if($waitSecond -eq $null){
-        $waitSecond = $waitSecond_default 
+    if([string]::IsNullOrEmpty($waitSecond)){
+        if([string]::IsNullOrEmpty($waitSecond_default)){
+            Write-Host "waitSecond_default is null or empty. please check config file.`r`nwaitSecond_default is required."
+            Break
+        }else{
+            $waitSecond = $waitSecond_default 
+        }
     }
-    #SlackのWebhook（引数指定が無ければデフォルト値を設定）
-    if($uri -eq $null){
-        $uri = $Webhook_default
+    if(-not([int]::TryParse($waitSecond,[ref]$null))){
+        Write-Host "waitSecond is not Integer. Please input Integer format.`r`nInput Data:"$waitSecond
+        Break
     }
-    $errorFlag = 0
+
+    if([string]::IsNullOrEmpty($uri)){
+        if([string]::IsNullOrEmpty($Webhook_default)){
+            Write-Host "Webhook_default is null or empty. please check config file.`r`nWebhook_default is required."
+            Break
+        }else{
+            $uri = $Webhook_default
+        }
+    }
 
     #接続
     try{
@@ -177,6 +191,6 @@ function CheckAADGuestStatus{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
         }
         Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
-        break
+        Break
     }
 }
