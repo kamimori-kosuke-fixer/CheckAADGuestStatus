@@ -23,6 +23,10 @@ Guest status monitoring span
 .LINK
 None
 #>
+
+#include config
+. ".CheckAADGuestStatus_config.ps1"
+
 function CheckAADGuestStatus{
     Param(
         [parameter(mandatory,HelpMessage="監視対象のユーザーのメールアドレスを入力してください")][ValidateNotNullOrEmpty()][string]$mail,
@@ -31,20 +35,17 @@ function CheckAADGuestStatus{
     )
     $enc = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
     $message = "確認依頼のあったゲストユーザーが参加されました！" #出力コメント
+    
+    #ループのタイミング（引数指定が無ければデフォルト値を設定）
     if($waitSecond -eq $null){
-        $waitSecond = 60 #何秒ごとにステータスチェックするかの期間
+        $waitSecond = $waitSecond_default 
     }
+    #SlackのWebhook（引数指定が無ければデフォルト値を設定）
     if($uri -eq $null){
-        $uri = "" #webhookのURLを入力（必須）
+        $uri = $Webhook_default
     }
-    $image = "" #利用したい画像のURLを入力（任意）
     $errorFlag = 0
 
-    #引数チェック
-    if($uri -eq ""){
-        Write-host "uriを入力してください"
-        break
-    }
     #接続
     try{
         $user=Get-AzureADUser -Filter "mail eq '$mail'" -ErrorAction Stop
@@ -116,7 +117,7 @@ function CheckAADGuestStatus{
                     }
                     "accessory" = @{
                         "type" = "image";
-                        "image_url" = $image;
+                        "image_url" = $image_default;
                         "alt_text" = "Join image"
                     }
                 },
