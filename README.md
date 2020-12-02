@@ -9,7 +9,7 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 # Prep
 
 - Windows10 PC
-- SlackのWebhook URL作成（https://slack.com/intl/ja-jp/help/articles/115005265063）
+- SlackのWebhook URL作成（例えば[Incoming-Webhook](https://slack.com/services/new/incoming-webhook)など）※[参考Qiita](https://qiita.com/vmmhypervisor/items/18c99624a84df8b31008)
 - AzureADのユーザー参照権限取得
 
 # How to Use
@@ -53,5 +53,6 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 
 - 細かい使い方は`get-help CheckAADGuestStatus -full`で確認してください。
 - WebhookのURLやループ待機時間は引数でも設定できます。
+- Webhookの作り方は[Slack公式](https://slack.com/intl/ja-jp/help/articles/115005265063)を参照するのも良いです。
 
 EX）CheckAADGuestStatus [-mail] <string> [[-waitSecond] <string>] [[-uri] <string>]
