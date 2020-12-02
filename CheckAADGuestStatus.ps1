@@ -25,7 +25,8 @@ None
 #>
 
 #include config
-. ".\CheckAADGuestStatus_config.ps1"
+.".\CheckAADGuestStatus_config.ps1"
+Write-Host "外部ファイル[CheckAADGuestStatus_config.ps1]を読み込みました"
 
 function global:CheckAADGuestStatus{
     Param(
@@ -147,17 +148,17 @@ function global:CheckAADGuestStatus{
             }
 
             if($user.UserState -eq "PendingAcceptance"){
-                Write-Host 承認まちです。。
+                Write-Host (get-date)":`tゲストはまだ参加していません。中断する場合はCtrl＋Cを押下してください。"
             }elseif($user.UserType -ne "Guest"){
-                Write-Host 対象ユーザーはゲストではありません
+                Write-Host (get-date)":`t対象ユーザーはゲストではありません"
                 break
             }elseif($user.UserState -eq "Accepted"){
                 Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
                 Get-Date -Format "yyyy/MM/dd HH:mm"
-                Write-Host ゲストユーザーのステータスがAcceptedに更新されました
+                Write-Host (get-date)":`tゲストユーザーのステータスがAcceptedに更新されました"
                 break
             }else{
-                Write-Host "ユーザーステータスチェックにてイレギュラーが発生しています`r`n"
+                Write-Host (get-date)":`tユーザーステータスチェックにてイレギュラーが発生しています`r`n"
                 break
             }
 
@@ -191,6 +192,8 @@ function global:CheckAADGuestStatus{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
         }
         Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+        Write-Host (get-date)":`tゲストユーザーの検索に失敗しました。詳細は下記メッセージを確認してください`r`n"$message
         Break
     }
 }
+Write-Host "CheckAADGuestStatusのコマンドが実行できるようになりました。`r`n使い方の詳細を確認する場合は下記コマンドを実施してください`r`nget-help CheckAADGuestStatus -full"
