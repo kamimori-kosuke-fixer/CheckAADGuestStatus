@@ -61,7 +61,16 @@ function global:CheckAADGuestStatus{
         }
     }
 
+
     #接続
+    Write-Host AzureADモジュールのインストール状況を確認します。
+    if((Get-Module -ListAvailable -Name AzureAD).count -ne 1){
+        Write-Host AzureADのモジュールをインストールします。
+        Install-Module -Name AzureAD -force
+        Get-Module -ListAvailable -Name AzureAD
+    }else{
+        Write-Host AzureADモジュールはすでにインストールされています。
+    }
     try{
         $user=Get-AzureADUser -Filter "mail eq '$mail'" -ErrorAction Stop
     }catch [Microsoft.Open.Azure.AD.CommonLibrary.AadNeedAuthenticationException] {
