@@ -26,7 +26,7 @@ None
 
 #include config
 .".\CheckAADGuestStatus_config.ps1"
-Write-Host "外部ファイル[CheckAADGuestStatus_config.ps1]を読み込みました"
+Write-Host "外部ファイル[CheckAADGuestStatus_config.ps1]を読み込みました`r`n"
 
 function global:CheckAADGuestStatus{
     Param(
@@ -205,4 +205,4 @@ function global:CheckAADGuestStatus{
         Break
     }
 }
-Write-Host "CheckAADGuestStatusのコマンドが実行できるようになりました。`r`n使い方の詳細を確認する場合は下記コマンドを実施してください`r`nget-help CheckAADGuestStatus -full"
+Write-Host "CheckAADGuestStatusのコマンドが実行できるようになりました。`r`n`r`n使い方の詳細を確認する場合は下記コマンドを実施してください`r`nget-help CheckAADGuestStatus -full`r`n"
