@@ -1,4 +1,4 @@
-<#
+ï»¿<#
 .SYNOPSIS
 AAD Guest User Status Check
 
@@ -26,19 +26,19 @@ None
 
 #include config
 .".\CheckAADGuestStatus_config.ps1"
-Write-Host "ŠO•”ƒtƒ@ƒCƒ‹[CheckAADGuestStatus_config.ps1]‚ð“Ç‚Ýž‚Ý‚Ü‚µ‚½`r`n"
+Write-Host "å¤–éƒ¨ãƒ•ã‚¡ã‚¤ãƒ«[CheckAADGuestStatus_config.ps1]ã‚’èª­ã¿è¾¼ã¿ã¾ã—ãŸ`r`n"
 
 function global:CheckAADGuestStatus{
     Param(
-        [parameter(mandatory,HelpMessage="ŠÄŽ‹‘ÎÛ‚Ìƒ†[ƒU[‚Ìƒ[ƒ‹ƒAƒhƒŒƒX‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢")][ValidateNotNullOrEmpty()][string]$mail,
-        [parameter(HelpMessage="ŠÄŽ‹‚ðŒJ‚è•Ô‚·ƒ^ƒCƒ~ƒ“ƒOi•bj‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢")][ValidateNotNullOrEmpty()][string]$waitSecond,
-        [parameter(HelpMessage="Œ‹‰Ê‚ð•Ô‚·WebHook‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢")][ValidateNotNullOrEmpty()][string]$webhook
+        [parameter(mandatory,HelpMessage="ç›£è¦–å¯¾è±¡ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„")][ValidateNotNullOrEmpty()][string]$mail,
+        [parameter(HelpMessage="ç›£è¦–ã‚’ç¹°ã‚Šè¿”ã™ã‚¿ã‚¤ãƒŸãƒ³ã‚°ï¼ˆç§’ï¼‰ã‚’æŒ‡å®šã—ã¦ãã ã•ã„")][ValidateNotNullOrEmpty()][string]$waitSecond,
+        [parameter(HelpMessage="çµæžœã‚’è¿”ã™WebHookã‚’æŒ‡å®šã—ã¦ãã ã•ã„")][ValidateNotNullOrEmpty()][string]$webhook
     )
     $enc = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
-    $message = "Šm”FˆË—Š‚Ì‚ ‚Á‚½ƒQƒXƒgƒ†[ƒU[‚ªŽQ‰Á‚³‚ê‚Ü‚µ‚½I" #o—ÍƒRƒƒ“ƒg
+    $message = "ç¢ºèªä¾é ¼ã®ã‚ã£ãŸã‚²ã‚¹ãƒˆãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒå‚åŠ ã•ã‚Œã¾ã—ãŸï¼" #å‡ºåŠ›ã‚³ãƒ¡ãƒ³ãƒˆ
     $errorFlag = 0
     
-    #ƒ‹[ƒv‚Ìƒ^ƒCƒ~ƒ“ƒOiˆø”Žw’è‚ª–³‚¯‚ê‚ÎƒfƒtƒHƒ‹ƒg’l‚ðÝ’èj
+    #ãƒ«ãƒ¼ãƒ—ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ï¼ˆå¼•æ•°æŒ‡å®šãŒç„¡ã‘ã‚Œã°ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šï¼‰
     if([string]::IsNullOrEmpty($waitSecond)){
         if([string]::IsNullOrEmpty($waitSecond_default)){
             Write-Host "waitSecond_default is null or empty. please check config file.`r`nwaitSecond_default is required."
@@ -62,14 +62,14 @@ function global:CheckAADGuestStatus{
     }
 
 
-    #Ú‘±
-    Write-Host AzureADƒ‚ƒWƒ…[ƒ‹‚ÌƒCƒ“ƒXƒg[ƒ‹ó‹µ‚ðŠm”F‚µ‚Ü‚·B
+    #æŽ¥ç¶š
+    Write-Host AzureADãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«çŠ¶æ³ã‚’ç¢ºèªã—ã¾ã™ã€‚
     if((Get-Module -ListAvailable -Name AzureAD).count -ne 1){
-        Write-Host AzureAD‚Ìƒ‚ƒWƒ…[ƒ‹‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚Ü‚·B
+        Write-Host AzureADã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¾ã™ã€‚
         Install-Module -Name AzureAD -force
         Get-Module -ListAvailable -Name AzureAD
     }else{
-        Write-Host AzureADƒ‚ƒWƒ…[ƒ‹‚Í‚·‚Å‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚·B
+        Write-Host AzureADãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã¯ã™ã§ã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã™ã€‚
     }
     try{
         $user=Get-AzureADUser -Filter "mail eq '$mail'" -ErrorAction Stop
@@ -87,35 +87,35 @@ function global:CheckAADGuestStatus{
         Break
     }
 
-    #ƒ†[ƒU[î•ñŽæ“¾
+    #ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±å–å¾—
     switch($user.count){
         {$_ -eq 0}{
-            $message="ƒ†[ƒU[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½Bƒ[ƒ‹ƒAƒhƒŒƒX‚ðŒ©’¼‚µ‚Ä‚­‚¾‚³‚¢`r`n"
+            $message="ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¦‹ç›´ã—ã¦ãã ã•ã„`r`n"
             $errorFlag = 1
             break
         }
         {$_ -gt 1}{
-            $message=$_+"Œ‚Ìƒ†[ƒU[‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½B‘ÎÛ‚ª1Œ‚É‚È‚é‚æ‚¤ƒ[ƒ‹ƒAƒhƒŒƒX‚ðŒ©’¼‚µ‚Ä‚­‚¾‚³‚¢B`r`n"
+            $message=$_+"ä»¶ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚å¯¾è±¡ãŒ1ä»¶ã«ãªã‚‹ã‚ˆã†ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¦‹ç›´ã—ã¦ãã ã•ã„ã€‚`r`n"
             $message+=$user|ft DisplayName,mail,UserType
             $errorFlag = 1
             break
         }
         {$_ -eq 1}{
-            "‰º‹Lƒ†[ƒU[‚ÌŠ‘®ó‹µ‚ðƒ`ƒFƒbƒN‚µ‚Ü‚·"
+            "ä¸‹è¨˜ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æ‰€å±žçŠ¶æ³ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¾ã™"
             $user|ft DisplayName,mail,UserType
             if($user.UserType -ne "Guest"){
-                $message="‘ÎÛƒ†[ƒU[‚ÍƒQƒXƒg‚Å‚Í‚ ‚è‚Ü‚¹‚ñ`r`n"
+                $message="å¯¾è±¡ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯ã‚²ã‚¹ãƒˆã§ã¯ã‚ã‚Šã¾ã›ã‚“`r`n"
                 $errorFlag = 1
                 break
             }
             if($user.UserState -eq "Accepted"){
-                $message="‘ÎÛ‚ÌƒQƒXƒgƒ†[ƒU[‚ÍŠù‚ÉŽQ‰ÁÏ‚Ý‚Å‚·`r`n"
+                $message="å¯¾è±¡ã®ã‚²ã‚¹ãƒˆãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯æ—¢ã«å‚åŠ æ¸ˆã¿ã§ã™`r`n"
                 $errorFlag = 1
                 break
             }
         }
         default{
-            $message="ƒ†[ƒU[ŒŸõiGet-AzureADUserj‚É‚ÄƒCƒŒƒMƒ…ƒ‰[‚ª”­¶‚µ‚Ä‚¢‚Ü‚·`r`n"
+            $message="ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¤œç´¢ï¼ˆGet-AzureADUserï¼‰ã«ã¦ã‚¤ãƒ¬ã‚®ãƒ¥ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¦ã„ã¾ã™`r`n"
             $errorFlag = 1
             break
         }
@@ -157,25 +157,25 @@ function global:CheckAADGuestStatus{
             }
 
             if($user.UserState -eq "PendingAcceptance"){
-                Write-Host (get-date)":`tƒQƒXƒg‚Í‚Ü‚¾ŽQ‰Á‚µ‚Ä‚¢‚Ü‚¹‚ñB’†’f‚·‚éê‡‚ÍCtrl{C‚ð‰Ÿ‰º‚µ‚Ä‚­‚¾‚³‚¢B"
+                Write-Host (get-date)":`tã‚²ã‚¹ãƒˆã¯ã¾ã å‚åŠ ã—ã¦ã„ã¾ã›ã‚“ã€‚ä¸­æ–­ã™ã‚‹å ´åˆã¯Ctrlï¼‹Cã‚’æŠ¼ä¸‹ã—ã¦ãã ã•ã„ã€‚"
             }elseif($user.UserType -ne "Guest"){
-                Write-Host (get-date)":`t‘ÎÛƒ†[ƒU[‚ÍƒQƒXƒg‚Å‚Í‚ ‚è‚Ü‚¹‚ñ"
+                Write-Host (get-date)":`tå¯¾è±¡ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯ã‚²ã‚¹ãƒˆã§ã¯ã‚ã‚Šã¾ã›ã‚“"
                 break
             }elseif($user.UserState -eq "Accepted"){
                 Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
                 Get-Date -Format "yyyy/MM/dd HH:mm"
-                Write-Host (get-date)":`tƒQƒXƒgƒ†[ƒU[‚ÌƒXƒe[ƒ^ƒX‚ªAccepted‚ÉXV‚³‚ê‚Ü‚µ‚½"
+                Write-Host (get-date)":`tã‚²ã‚¹ãƒˆãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒAcceptedã«æ›´æ–°ã•ã‚Œã¾ã—ãŸ"
                 break
             }else{
-                Write-Host (get-date)":`tƒ†[ƒU[ƒXƒe[ƒ^ƒXƒ`ƒFƒbƒN‚É‚ÄƒCƒŒƒMƒ…ƒ‰[‚ª”­¶‚µ‚Ä‚¢‚Ü‚·`r`n"
+                Write-Host (get-date)":`tãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒã‚§ãƒƒã‚¯ã«ã¦ã‚¤ãƒ¬ã‚®ãƒ¥ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¦ã„ã¾ã™`r`n"
                 break
             }
 
-            # ‘Ò‹@
+            # å¾…æ©Ÿ
             Start-Sleep -Seconds $waitsecond
         }
     }else{
-        $message+="ŒŸõðŒ‚Íu"+$mail+"v‚Å‚·`r`n"
+        $message+="æ¤œç´¢æ¡ä»¶ã¯ã€Œ"+$mail+"ã€ã§ã™`r`n"
         $user =(Get-AzureADUser | `
         ?{
             $_.usertype -eq "Guest" `
@@ -184,7 +184,7 @@ function global:CheckAADGuestStatus{
         })
         switch($user.count){
             {$_ -ge 1}{
-                $message+="’¼‹ß‚Å‚ÉInvite‚³‚ê‚½ƒQƒXƒg‚Ì‚È‚©‚ÅA–¢ŽQ‰Á‚ÌƒQƒXƒg‚Í‚±‚¿‚ç‚Å‚·`r`n"
+                $message+="ç›´è¿‘ã§ã«Inviteã•ã‚ŒãŸã‚²ã‚¹ãƒˆã®ãªã‹ã§ã€æœªå‚åŠ ã®ã‚²ã‚¹ãƒˆã¯ã“ã¡ã‚‰ã§ã™`r`n"
 
                 $message+="-----`r`nMail`tUsertype`r`n"
                 $user|foreach{
@@ -193,7 +193,7 @@ function global:CheckAADGuestStatus{
                 }
                 $message+="-----`r`n"
             }default{
-                $message+="’¼‹ß‚Å‚ÉInvite‚³‚ê‚½ƒQƒXƒg‚Ì‚È‚©‚ÅA–¢ŽQ‰Á‚ÌƒQƒXƒg‚Í‚¢‚Ü‚¹‚ñ‚Å‚µ‚½`r`n"
+                $message+="ç›´è¿‘ã§ã«Inviteã•ã‚ŒãŸã‚²ã‚¹ãƒˆã®ãªã‹ã§ã€æœªå‚åŠ ã®ã‚²ã‚¹ãƒˆã¯ã„ã¾ã›ã‚“ã§ã—ãŸ`r`n"
             }
         }
         $payload = 
@@ -201,8 +201,8 @@ function global:CheckAADGuestStatus{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
         }
         Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
-        Write-Host (get-date)":`tƒQƒXƒgƒ†[ƒU[‚ÌŒŸõ‚ÉŽ¸”s‚µ‚Ü‚µ‚½BÚ×‚Í‰º‹LƒƒbƒZ[ƒW‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢`r`n"$message
+        Write-Host (get-date)":`tã‚²ã‚¹ãƒˆãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æ¤œç´¢ã«å¤±æ•—ã—ã¾ã—ãŸã€‚è©³ç´°ã¯ä¸‹è¨˜ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç¢ºèªã—ã¦ãã ã•ã„`r`n"$message
         Break
     }
 }
-Write-Host "CheckAADGuestStatus‚ÌƒRƒ}ƒ“ƒh‚ªŽÀs‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚µ‚½B`r`n`r`nŽg‚¢•û‚ÌÚ×‚ðŠm”F‚·‚éê‡‚Í‰º‹LƒRƒ}ƒ“ƒh‚ðŽÀŽ{‚µ‚Ä‚­‚¾‚³‚¢`r`nget-help CheckAADGuestStatus -full`r`n"
+Write-Host "CheckAADGuestStatusã®ã‚³ãƒžãƒ³ãƒ‰ãŒå®Ÿè¡Œã§ãã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã—ãŸã€‚`r`n`r`nä½¿ã„æ–¹ã®è©³ç´°ã‚’ç¢ºèªã™ã‚‹å ´åˆã¯ä¸‹è¨˜ã‚³ãƒžãƒ³ãƒ‰ã‚’å®Ÿæ–½ã—ã¦ãã ã•ã„`r`nget-help CheckAADGuestStatus -full`r`n"

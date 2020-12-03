@@ -1,9 +1,9 @@
-#ŠeíInit
-#ƒ‹[ƒvŠÔi•b’PˆÊj
+ï»¿#å„ç¨®Init
+#ãƒ«ãƒ¼ãƒ—æ™‚é–“ï¼ˆç§’å˜ä½ï¼‰
 $global:waitSecond_default = 60
 
-#Webhook‚ÌURL(Slack API[https://api.slack.com/apps/{AppID}/incoming-webhooks]‚©‚çæ“¾)
+#Webhookã®URL(Slack API[https://api.slack.com/apps/{AppID}/incoming-webhooks]ã‹ã‚‰å–å¾—)
 $global:Webhook_default = ""
 
-#’Ê’m‚É—˜—p‚·‚éƒAƒCƒRƒ“‚ÌURI(”CˆÓ)
+#é€šçŸ¥ã«åˆ©ç”¨ã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®URI(ä»»æ„)
 $global:image_default = ""
