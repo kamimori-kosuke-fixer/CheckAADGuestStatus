@@ -13,7 +13,7 @@ Repeat the check every 10 minutes(600 seconds) if guest have not yet joined.
 .PARAMETER mail
 Enter the email address you used for the guest invite.
 
-.PARAMETER mail
+.PARAMETER webhook
 Enter WebHook URI that will return a response.
 
 .PARAMETER waitSecond
@@ -32,7 +32,7 @@ function global:CheckAADGuestStatus{
     Param(
         [parameter(mandatory,HelpMessage="監視対象のユーザーのメールアドレスを入力してください")][ValidateNotNullOrEmpty()][string]$mail,
         [parameter(HelpMessage="監視を繰り返すタイミング（秒）を指定してください")][ValidateNotNullOrEmpty()][string]$waitSecond,
-        [parameter(HelpMessage="結果を返すWebHookを指定してください")][ValidateNotNullOrEmpty()][string]$uri
+        [parameter(HelpMessage="結果を返すWebHookを指定してください")][ValidateNotNullOrEmpty()][string]$webhook
     )
     $enc = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
     $message = "確認依頼のあったゲストユーザーが参加されました！" #出力コメント
@@ -52,12 +52,12 @@ function global:CheckAADGuestStatus{
         Break
     }
 
-    if([string]::IsNullOrEmpty($uri)){
+    if([string]::IsNullOrEmpty($webhook)){
         if([string]::IsNullOrEmpty($Webhook_default)){
             Write-Host "Webhook_default is null or empty. please check config file.`r`nWebhook_default is required."
             Break
         }else{
-            $uri = $Webhook_default
+            $webhook = $Webhook_default
         }
     }
 
@@ -162,7 +162,7 @@ function global:CheckAADGuestStatus{
                 Write-Host (get-date)":`t対象ユーザーはゲストではありません"
                 break
             }elseif($user.UserState -eq "Accepted"){
-                Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+                Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
                 Get-Date -Format "yyyy/MM/dd HH:mm"
                 Write-Host (get-date)":`tゲストユーザーのステータスがAcceptedに更新されました"
                 break
@@ -200,7 +200,7 @@ function global:CheckAADGuestStatus{
         @{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
         }
-        Invoke-RestMethod -Uri $uri -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+        Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
         Write-Host (get-date)":`tゲストユーザーの検索に失敗しました。詳細は下記メッセージを確認してください`r`n"$message
         Break
     }

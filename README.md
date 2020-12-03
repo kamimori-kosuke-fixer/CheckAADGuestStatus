@@ -56,4 +56,4 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 - WebhookのURLやループ待機時間は引数でも設定できます。
 - Webhookの作り方は[Slack公式](https://slack.com/intl/ja-jp/help/articles/115005265063)を参照するのも良いです。
 
-EX）CheckAADGuestStatus [-mail] <string> [[-waitSecond] <string>] [[-uri] <string>]
+EX）CheckAADGuestStatus [-mail] <string> [[-waitSecond] <string>] [[-webhook] <string>]
