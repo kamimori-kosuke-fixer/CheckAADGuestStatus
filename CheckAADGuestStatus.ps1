@@ -124,53 +124,51 @@ function global:CheckAADGuestStatus{
     if($errorFlag -eq 0){
         while(1) { 
             $user=Get-AzureADUser -Filter "mail eq '$mail'"
-            $payload = @{
-                "blocks" = @{
-                    "type" = "section";
-                    "text" = @{
-                        type = "mrkdwn";
-                        text = "User has joined!!"
+            switch($user.UserState){
+                {$_ -eq "PendingAcceptance"}{
+                    Write-Host (get-date)":`tゲストはまだ参加していません。中断する場合はCtrl＋Cを押下してください。"
+                }
+                {$_ -eq "Accepted"}{
+                    $payload = @{
+                        "blocks" = @{
+                            "type" = "section";
+                            "text" = @{
+                                type = "mrkdwn";
+                                text = "User has joined!!"
+                            }
+                        },
+                        @{
+                            "type" = "section";
+                            "block_id" = "section01";
+                            "text" = @{
+                                "type" = "mrkdwn";
+                                "text" = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
+                            }
+                            "accessory" = @{
+                                "type" = "image";
+                                "image_url" = $image_default;
+                                "alt_text" = "Join image"
+                            }
+                        },
+                        @{
+                            "type" = "section";
+                            "block_id" = "section02";
+                            "text" =
+                            @{
+                                "type" = "mrkdwn";
+                                "text" = " USER INFORMATION:\n Name:"+$user.DisplayName+"\n Mail:"+$user.Mail
+                            }
+                        }
                     }
-                },
-                @{
-                    "type" = "section";
-                    "block_id" = "section01";
-                    "text" = @{
-                        "type" = "mrkdwn";
-                        "text" = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
-                    }
-                    "accessory" = @{
-                        "type" = "image";
-                        "image_url" = $image_default;
-                        "alt_text" = "Join image"
-                    }
-                },
-                @{
-                    "type" = "section";
-                    "block_id" = "section02";
-                    "text" =
-                     @{
-                        "type" = "mrkdwn";
-                        "text" = " USER INFORMATION:\n Name:"+$user.DisplayName+"\n Mail:"+$user.Mail
-                    }
+                    Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+                    Write-Host (get-date)":`tゲストユーザーのステータスがAcceptedに更新されました。ゲストとのやり取りが開始できます。"
+                    break
+                }
+                default{
+                    Write-Host (get-date)":`tユーザーステータスチェックにてイレギュラーが発生しています`r`n"
+                    break
                 }
             }
-
-            if($user.UserState -eq "PendingAcceptance"){
-                Write-Host (get-date)":`tゲストはまだ参加していません。中断する場合はCtrl＋Cを押下してください。"
-            }elseif($user.UserType -ne "Guest"){
-                Write-Host (get-date)":`t対象ユーザーはゲストではありません"
-                break
-            }elseif($user.UserState -eq "Accepted"){
-                Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
-                Get-Date -Format "yyyy/MM/dd HH:mm"
-                Write-Host (get-date)":`tゲストユーザーのステータスがAcceptedに更新されました"
-                break
-            }else{
-                Write-Host (get-date)":`tユーザーステータスチェックにてイレギュラーが発生しています`r`n"
-                break
-            }
-
             # 待機
             Start-Sleep -Seconds $waitsecond
         }
