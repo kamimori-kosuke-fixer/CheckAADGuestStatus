@@ -14,11 +14,12 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 
 ## How to Use
 
-1. 二つのPS1ファイルをダウンロードして、任意のフォルダに配置してください**補足1
-1. `CheckAADGuestStatus_config.ps1`の各パラメーターをエディタ（メモ帳やVSCodeなど）で更新してください。**※補足2**
-1. PS1をダウンロードした同じフォルダでPowerShellを起動してください。**※補足3**
-1. PowerShellの画面上で`.\CheckAADGuestStatus.ps1`と入力してEnterを押下してください。
-1. 「CheckAADGuestStatusのコマンドが実行できるようになりました。」のメッセージが表示されることを確認してください。
+1. 二つのPS1ファイルをダウンロードして、任意のフォルダに配置してください**補足1**
+![ファイルのダウンロード](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/file%20download.png)
+1. `CheckAADGuestStatus_config.ps1`の各パラメーターをエディタ（メモ帳やVSCodeなど）で編集します。**※補足2**
+1. PS1をダウンロードした同じフォルダでPowerShellを起動します。**※補足3**
+1. PowerShellの画面上で`.\CheckAADGuestStatus.ps1`と入力してEnterを押下します。
+1. 「CheckAADGuestStatusのコマンドが実行できるようになりました。」のメッセージが表示されることを確認します。
 1. PowerShellの画面上で`CheckAADGuestStatus`と入力してEnterを押下します。
 1. メールアドレスの入力が求められるため、参加状況を確認したいゲストユーザーのメールアドレスを入力します。
 1. ユーザー認証が求められるため、招待者（または招待者が所属する組織アカウント）のメールアドレスで認証を行います。
@@ -27,6 +28,11 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 
 ### 補足1
 
+ファイルのダウンロードは例えばこのように実施してください。右クリ保存でも〇です。
+1. リポジトリのURLにアクセス
+1. 緑色のCodeボタンをクリック
+1. Download ZIPをクリック
+1. ZIPを解凍
 
 
 ### 補足2
