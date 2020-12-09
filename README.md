@@ -17,12 +17,15 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 1. 二つのPS1ファイルをダウンロードして、任意のフォルダに配置してください **※補足1**
 ![ファイルのダウンロード](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/file%20download.png)
 1. `CheckAADGuestStatus_config.ps1`の各パラメーターをエディタ（メモ帳やVSCodeなど）で編集します。**※補足2**
-1. PS1をダウンロードした同じフォルダでPowerShellを起動します。**※補足3**
+1. PowerShell(管理者権限)を起動し、PS1をダウンロードした同じフォルダに移動します。**※補足3**
 1. PowerShellの画面上で`.\CheckAADGuestStatus.ps1`と入力してEnterを押下します。
 1. 「CheckAADGuestStatusのコマンドが実行できるようになりました。」のメッセージが表示されることを確認します。
-1. PowerShellの画面上で`CheckAADGuestStatus`と入力してEnterを押下します。
+![Functionのインストール](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/installFunction.png)
+1. PowerShellの画面上で`CheckAADGuestStatus`と入力してEnterを押下します。 **※補足4**
 1. メールアドレスの入力が求められるため、参加状況を確認したいゲストユーザーのメールアドレスを入力します。
+![Functionの実行](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/StartFunction.png)
 1. ユーザー認証が求められるため、招待者（または招待者が所属する組織アカウント）のメールアドレスで認証を行います。
+![アカウントサインイン](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/AccountSignIn.png)
 1. 結果を確認します。（Slackの通知またはPowerShell画面を確認）
 1. 終わり
 
@@ -59,10 +62,21 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
  入力する場合はファイルの直接リンクを指定します。
 
 ### 補足3
+- 管理者権限でPowerShellを開く
 
-- ファイルを保存したフォルダを開き、ファイルがない場所でShift＋右クリック
-- 「PowerShellウィンドウをここで開く」をクリック
-- 慣れている方はご自由に！
+![PowreShellAdminOpen](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/Open-PowerShell-with-Administrator-Role.gif)
+
+- ファイルを保存したフォルダに移動
+
+※画像は「C:\temp\CheckAADGuestStatus-main」にファイルを配置した場合の例
+
+![ChangeDirectory](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/ChangeDirectory.png)
+
+### 補足4
+
+UnauthorizedAccessが発生する場合はPS1ファイルのプロパティを修正してください。
+
+![UnauthorizedAccess](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/UnauthorizedAccess.png)
 
 ### FYI
 
