@@ -130,14 +130,6 @@ function global:CheckAADGuestStatus{
                 }
                 {$_ -eq "Accepted"}{
                     $payload = @{
-                        "blocks" = @{
-                            "type" = "section";
-                            "text" = @{
-                                type = "mrkdwn";
-                                text = "User has joined!!"
-                            }
-                        },
-                        @{
                             "type" = "section";
                             "block_id" = "section01";
                             "text" = @{
@@ -160,7 +152,12 @@ function global:CheckAADGuestStatus{
                             }
                         }
                     }
-                    Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+                    try{
+                        Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+                    }catch{
+                        Write-host "Webhookへの送信が失敗しました。Webhookに設定された値が間違っているか、対象URLが存在しません。`r`n`r`n"
+                    }
+                    
                     Write-Host (get-date)":`tゲストユーザーのステータスがAcceptedに更新されました。ゲストとのやり取りが開始できます。"
                     break
                 }
@@ -198,7 +195,11 @@ function global:CheckAADGuestStatus{
         @{
             text = $enc.GetString([System.Text.Encoding]::UTF8.GetBytes($message));
         }
-        Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+        try{
+            Invoke-RestMethod -Uri $webhook -Method POST -Body (ConvertTo-Json $payload -Depth 4).Replace('\\n','\n')
+        }catch{
+            Write-host "Webhookへの送信が失敗しました。Webhookに設定された値が間違っているか、対象URLが存在しません。`r`n`r`n"
+        }
         Write-Host (get-date)":`tゲストユーザーの検索に失敗しました。詳細は下記メッセージを確認してください`r`n"$message
         Break
     }

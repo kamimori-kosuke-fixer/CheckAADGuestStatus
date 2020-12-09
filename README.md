@@ -62,6 +62,7 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
  入力する場合はファイルの直接リンクを指定します。
 
 ### 補足3
+
 - 管理者権限でPowerShellを開く
 
 ![PowreShellAdminOpen](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/blob/image/Open-PowerShell-with-Administrator-Role.gif)
