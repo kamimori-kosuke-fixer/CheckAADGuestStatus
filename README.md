@@ -30,8 +30,7 @@ Azure ADのゲストが参加したか否かを確認するPowerShellのFunction
 
 ファイルのダウンロードは例えばこのように実施してください。右クリ保存でも〇です。
 
-1. リポジトリのURLにアクセス
-1. 緑色のCodeボタンをクリック
+1. [本ページ](https://github.com/kamimori-kosuke-fixer/CheckAADGuestStatus/)の緑色のCodeボタンをクリック
 1. Download ZIPをクリック
 1. ZIPを解凍
 
